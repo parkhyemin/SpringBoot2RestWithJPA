@@ -1,53 +1,45 @@
 package com.springboot.api;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.springboot.api.code.Code;
 import com.springboot.api.code.CodeRepository;
 
-@Controller
+@RestController
 public class SpringBoot2RestServiceApplication {
 
+	private String baseUrl = "http://openapi.molit.go.kr:8081/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTrade";
+	private String serviceKey = "AI9qcEoaK35mGSnhjGyfzEBVkfoS14LZFAn7BgBQbI5FwHzxJe1%2BNwPz0GcB%2F0JsMXpFLic28nDyRorftIW8yg%3D%3D";
+	
 	@Autowired
-	 private CodeRepository codeRepository;
-	
-	// inject via application.properties
-	@Value("${welcome.message:test}")
-	private String message = "Hello World";
+	private CodeRepository codeRepository;
 
-//	@RequestMapping("/")
-//	public String welcome(Map<String, Object> model) {
-//		model.put("message", this.message);
-//		return "welcome";
-//	}
-	
-	@RequestMapping("/api/hello")
-	public @ResponseBody String hello() {
-		return "Hello, Spring Boot! change!2";
+	@CrossOrigin("*")
+	@RequestMapping("/api/sido")
+	public String sido(@RequestParam Map<String, String> paramMap) {
+//		List<Code> list = codeRepository.findAllCode();
+//		Stream<Code> stream = list.stream();
+//		stream.filter(c -> c.getSido().equals("제주도")).forEach(System.out::println);
+				
+		return "aa";
 	}
 	
 	@CrossOrigin("*")
-	@RequestMapping("/api/sample")
-	@ResponseBody
-	public String sample(@RequestParam Map<String, String> paramMap) {
-		List<Code> list = codeRepository.findAllCode();
-		Stream<Code> stream = list.stream();
-		stream.filter(c -> c.getSido().equals("제주도")).forEach(System.out::println);
-				
-//		Iterator<Code> ic = codeRepository.findAll().iterator();
-//		System.out.println(ic.hasNext());
-		return "aa";
+	@RequestMapping("/api/data")
+	public String data(@RequestParam Map<String, String> paramMap) {
+		RestApiHelper c = new RestApiHelper()
+				.SetBaseUrl(baseUrl)
+				.SetServiceKey(serviceKey)
+				.SetLawdCd(paramMap.get("lawdCd"))
+				.SetDealYmd(paramMap.get("dealYmd"))
+				.GenerateFullUrl();
+		
+		return c.getXmlInformation();
 	}
 
 }
