@@ -9,19 +9,27 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CodeRepository extends CrudRepository<Code, Integer> {
 	@Query(nativeQuery = true, value=
-			"select *\r\n" + 
-			"from TBL_JSCODE\r\n" + 
-			"where SIGUN is  null\r\n" + 
-			"order by CODE")
-	List<Code> findSidoCode();
+			"select * from TBL_JSCODE")
+	List<Code> findAllCode();
 	
 	@Query(nativeQuery = true, value=
-			"select * \r\n" + 
-			"from tbl_jscode\r\n" + 
-			"where sido = ?1 \r\n" + 
-			"and sigun is not null\r\n" + 
-			"and dong is null\r\n" + 
-			"order by sigun")
-	List<Code> findSiGunGuCode(String sido);
+			"select * from TBL_JSCODE where sigun is null order by code")
+	List<Code> findSiDoCode();
 	
+	@Query(nativeQuery = true, value=
+			"select *											\r\n" + 
+			"from TBL_JSCODE									\r\n" + 
+			"where substr(CODE,0,2) = substr(?,0,2)	\r\n" + 
+			"and SIGUN is not null								\r\n" + 
+			"and DONG is null									\r\n" + 
+			"order by SIGUN")
+	List<Code> findSigunguCode(String sidoCode);
+	
+	@Query(nativeQuery = true, value=
+			"select *											\r\n" + 
+			"from TBL_JSCODE									\r\n" + 
+			"where substr(CODE,0,4) = substr(?,0,4)				\r\n" + 
+			"and DONG is not null								\r\n" + 
+			"order by DONG")
+	List<Code> findDongCode(String sigunguCode);
 }

@@ -53,14 +53,20 @@
 			<version>12.1.0.1-atlassian-hosted</version>
 		</dependency>
 		
+		<!-- Developer Tools -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
-<!-- 				<artifactId>spring-boot-maven-plugin</artifactId> -->
-					<artifactId>spring-boot-devtools</artifactId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
