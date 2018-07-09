@@ -8,9 +8,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class RestApiHelper {
-		
-	/*"http://openapi.molit.go.kr:8081/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTrade?ServiceKey=AI9qcEoaK35mGSnhjGyfzEBVkfoS14LZFAn7BgBQbI5FwHzxJe1%2BNwPz0GcB%2F0JsMXpFLic28nDyRorftIW8yg%3D%3D&LAWD_CD=11110&DEAL_YMD=201512"*/
+	static final Logger logger = LoggerFactory.getLogger(RestApiHelper.class);	
 	private String _baseUrl;
 	private String _serviceKey;
 	private String _parameter = new String();
@@ -52,6 +54,7 @@ public class RestApiHelper {
 				sb.append(inputLine).append("\n");
 			}
 			in.close();
+			logger.info(sb.toString());
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
