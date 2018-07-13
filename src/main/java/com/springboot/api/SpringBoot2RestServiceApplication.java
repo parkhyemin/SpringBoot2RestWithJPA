@@ -23,17 +23,16 @@ public class SpringBoot2RestServiceApplication {
 	
 	private String serviceKey = "AI9qcEoaK35mGSnhjGyfzEBVkfoS14LZFAn7BgBQbI5FwHzxJe1%2BNwPz0GcB%2F0JsMXpFLic28nDyRorftIW8yg%3D%3D";
 	
-	// 아파트 목록 API
-	private String aptListBaseUrl = "http://apis.data.go.kr/1611000/AptListService/getLegaldongAptList";
 	
-	// 아파트 실거래내역 API
-	private String aptTradeListBaseUrl = "http://openapi.molit.go.kr:8081/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTrade";
+	// 실거래 내역 API 기본 URL
+	private String apiBaseUrl = "http://openapi.molit.go.kr:8081/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc";
+	private String aptTradeUrl = "/getRTMSDataSvcAptTrade";	// 아파트
+	private String rhTradeUrl = "/getRTMSDataSvcRHTrade";	// 연립, 다세대
+	private String shTradeUrl = "/getRTMSDataSvcSHTrade";	// 단독, 다가구 주택
 	
-	// 연립다세대 매매 실거래 API
-	private String rhTradeListBaseUrl = "http://openapi.molit.go.kr:8081/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcRHTrade";
-	
-	// 단독 주택 매매 실거래 API
-	private String shTradeListBaseUrl = "http://openapi.molit.go.kr:8081/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcSHTrade";
+	// 카카오 주소-> 경도 API 기본 URL
+	private String apiKakakoBaseUrl = "https://dapi.kakao.com/v2/local/search/address.json?query=";
+	private String apiKey = "4bdbeb2a97c3db7eb425753b4acafb9e";
 	
 	@Autowired
 	private CodeRepository codeRepository;
@@ -57,22 +56,6 @@ public class SpringBoot2RestServiceApplication {
 		return codeRepository.findDongCode(paramMap.get("sigungu"));
 	}
 	
-	/**
-	 * 아파트 목록 API
-	 * @param paramMap
-	 * @return
-	 */
-	@CrossOrigin("*")
-	@RequestMapping("/api/getLegaldongAptList")
-	public String getLegaldongAptList(@RequestParam Map<String, String> paramMap) {
-		return new RestApiHelper()
-				.SetBaseUrl(aptListBaseUrl)
-				.SetServiceKey(serviceKey)
-				.ParameterMap2Url(paramMap)
-				.GenerateApiFullUrl()
-				.getInputStream();
-		
-	}
 	
 	/**
 	 * 아파트 실거래내역 API
@@ -83,7 +66,7 @@ public class SpringBoot2RestServiceApplication {
 	@RequestMapping("/api/getRTMSDataSvcAptTrade")
 	public String getRTMSDataSvcAptTrade(@RequestParam Map<String, String> paramMap) {
 		return new RestApiHelper()
-				.SetBaseUrl(aptTradeListBaseUrl)
+				.SetBaseUrl(apiBaseUrl + aptTradeUrl)
 				.SetServiceKey(serviceKey)
 				.ParameterMap2Url(paramMap)
 				.GenerateApiFullUrl()
@@ -100,7 +83,7 @@ public class SpringBoot2RestServiceApplication {
 	@RequestMapping("/api/getRTMSDataSvcRHTrade")
 	public String getRTMSDataSvcRHTrade(@RequestParam Map<String, String> paramMap) {
 		return new RestApiHelper()
-				.SetBaseUrl(rhTradeListBaseUrl)
+				.SetBaseUrl(apiBaseUrl + rhTradeUrl)
 				.SetServiceKey(serviceKey)
 				.ParameterMap2Url(paramMap)
 				.GenerateApiFullUrl()
@@ -117,11 +100,30 @@ public class SpringBoot2RestServiceApplication {
 	@RequestMapping("/api/getRTMSDataSvcSHTrade")
 	public String getRTMSDataSvcSHTrade(@RequestParam Map<String, String> paramMap) {
 		return new RestApiHelper()
-				.SetBaseUrl(shTradeListBaseUrl)
+				.SetBaseUrl(apiBaseUrl + shTradeUrl)
 				.SetServiceKey(serviceKey)
 				.ParameterMap2Url(paramMap)
 				.GenerateApiFullUrl()
 				.getInputStream();
+		
+	}
+	
+	/**
+	 * 다음카카오API
+	 *  시 + 구 + 동 + 번지로 경도 구하기
+	 *  ex)https://dapi.kakao.com/v2/local/search/address.json?query=서울특별시 중랑구 망우동 506-8
+	 *  주의 : 해더값(Authorization) 추가 필요 
+	 * @param paramMap
+	 * @return
+	 */
+	@CrossOrigin("*")
+	@RequestMapping("/api/getAddress")
+	public String getAddress(@RequestParam Map<String, String> paramMap) {
+		return new RestApiHelper()
+				.SetBaseUrl(apiKakakoBaseUrl)
+				.SetServiceKey(apiKey)
+				.SetParameter(paramMap.get("query"))
+				.getInputStreamUnicode();
 		
 	}
 
