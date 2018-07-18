@@ -15,7 +15,7 @@ import com.springboot.api.code.CodeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+@CrossOrigin("*")
 @RestController
 public class SpringBoot2RestServiceApplication {
 
@@ -37,32 +37,26 @@ public class SpringBoot2RestServiceApplication {
 	@Autowired
 	private CodeRepository codeRepository;
 
-	@CrossOrigin("*")
 	@RequestMapping("/api/sido")
 	public List<Code> sido(@RequestParam Map<String, String> paramMap) {
 		return codeRepository.findSiDoCode();
 	}
 	
-	
-	@CrossOrigin("*")
 	@RequestMapping("/api/sigungu")
 	public List<Code> sigungu(@RequestParam Map<String, String> paramMap) {
 		return codeRepository.findSigunguCode(paramMap.get("sido"));
 	}
 	
-	@CrossOrigin("*")
 	@RequestMapping("/api/dong")
 	public List<Code> dong(@RequestParam Map<String, String> paramMap) {
 		return codeRepository.findDongCode(paramMap.get("sigungu"));
 	}
-	
 	
 	/**
 	 * 아파트 실거래내역 API
 	 * @param paramMap
 	 * @return
 	 */
-	@CrossOrigin("*")
 	@RequestMapping("/api/getRTMSDataSvcAptTrade")
 	public String getRTMSDataSvcAptTrade(@RequestParam Map<String, String> paramMap) {
 		return new RestApiHelper()
@@ -79,7 +73,6 @@ public class SpringBoot2RestServiceApplication {
 	 * @param paramMap
 	 * @return
 	 */
-	@CrossOrigin("*")
 	@RequestMapping("/api/getRTMSDataSvcRHTrade")
 	public String getRTMSDataSvcRHTrade(@RequestParam Map<String, String> paramMap) {
 		return new RestApiHelper()
@@ -96,7 +89,6 @@ public class SpringBoot2RestServiceApplication {
 	 * @param paramMap
 	 * @return
 	 */
-	@CrossOrigin("*")
 	@RequestMapping("/api/getRTMSDataSvcSHTrade")
 	public String getRTMSDataSvcSHTrade(@RequestParam Map<String, String> paramMap) {
 		return new RestApiHelper()
@@ -116,14 +108,13 @@ public class SpringBoot2RestServiceApplication {
 	 * @param paramMap
 	 * @return
 	 */
-	@CrossOrigin("*")
 	@RequestMapping("/api/getAddress")
 	public String getAddress(@RequestParam Map<String, String> paramMap) {
 		return new RestApiHelper()
 				.SetBaseUrl(apiKakakoBaseUrl)
 				.SetServiceKey(apiKey)
 				.SetParameter(paramMap.get("query"))
-				.getInputStreamUnicode();
+				.getInputStreamKakao();
 		
 	}
 

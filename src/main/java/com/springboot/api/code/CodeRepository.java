@@ -13,7 +13,7 @@ public interface CodeRepository extends CrudRepository<Code, Integer> {
 	List<Code> findAllCode();
 	
 	@Query(nativeQuery = true, value=
-			"select * from TBL_JSCODE where sigun is null order by code")
+			"select * from TBL_JSCODE where SIGUN is null order by CODE")
 	List<Code> findSiDoCode();
 	
 	@Query(nativeQuery = true, value=
