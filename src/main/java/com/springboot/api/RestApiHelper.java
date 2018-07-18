@@ -15,10 +15,16 @@ import org.slf4j.LoggerFactory;
 
 public class RestApiHelper {
 	static final Logger logger = LoggerFactory.getLogger(RestApiHelper.class);	
-	private String _baseUrl;
-	private String _serviceKey;
-	private String _parameter = new String();
-	private String _fullUrl;
+	private String _domain		= new String();
+	private String _baseUrl		= new String();
+	private String _serviceKey	= new String();
+	private String _parameter 	= new String();
+	private String _fullUrl		= new String();
+	
+	public RestApiHelper SetDomain(String domain) {
+		this._domain = domain;
+		return this;
+	}
 	
 	public RestApiHelper SetBaseUrl(String baseUrl) {
 		this._baseUrl = baseUrl;
@@ -44,12 +50,12 @@ public class RestApiHelper {
 	}
 	
 	public RestApiHelper GenerateApiFullUrl() {
-		this._fullUrl = _baseUrl + "?ServiceKey=" + this._serviceKey + this._parameter;
+		this._fullUrl = _domain + _baseUrl + "?ServiceKey=" + this._serviceKey + this._parameter;
 		return this;
 	}
 
 	public String getInputStream()  {
-		return getInputStream(_fullUrl + _parameter, false);
+		return getInputStream(_fullUrl, false);
 	}
 	
 	public String getInputStreamKakao()  {
@@ -65,6 +71,7 @@ public class RestApiHelper {
 	}
 	
 	private String getInputStream(String fullUrl, boolean isKakaoApi) {
+		logger.info(fullUrl);
 		StringBuilder sb = new StringBuilder();
 		try {
 

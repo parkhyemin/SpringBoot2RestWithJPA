@@ -25,10 +25,13 @@ public class SpringBoot2RestController {
 	
 	
 	// 실거래 내역 API 기본 URL
-	private String apiBaseUrl = "http://openapi.molit.go.kr:8081/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc";
-	private String aptTradeUrl = "/getRTMSDataSvcAptTrade";	// 아파트
-	private String rhTradeUrl = "/getRTMSDataSvcRHTrade";	// 연립, 다세대
-	private String shTradeUrl = "/getRTMSDataSvcSHTrade";	// 단독, 다가구 주택
+	private String apiDomain	= "http://openapi.molit.go.kr:8081";
+	private String offiDomain 	= "http://openapi.molit.go.kr";
+	private String apiBaseUrl 	= "/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc";
+	private String aptTradeUrl 	= "/getRTMSDataSvcAptTrade";	// 아파트
+	private String rhTradeUrl 	= "/getRTMSDataSvcRHTrade";		// 연립, 다세대
+	private String shTradeUrl 	= "/getRTMSDataSvcSHTrade";		// 단독, 다가구 주택
+	private String offiTradeUrl = "/getRTMSDataSvcOffiTrade";	// 오피스텔
 	
 	// 카카오 주소-> 경도 API 기본 URL
 	private String apiKakakoBaseUrl = "https://dapi.kakao.com/v2/local/search/address.json?query=";
@@ -60,6 +63,7 @@ public class SpringBoot2RestController {
 	@RequestMapping("/api/getRTMSDataSvcAptTrade")
 	public String getRTMSDataSvcAptTrade(@RequestParam Map<String, String> paramMap) {
 		return new RestApiHelper()
+				.SetDomain(apiDomain)
 				.SetBaseUrl(apiBaseUrl + aptTradeUrl)
 				.SetServiceKey(serviceKey)
 				.ParameterMap2Url(paramMap)
@@ -76,6 +80,7 @@ public class SpringBoot2RestController {
 	@RequestMapping("/api/getRTMSDataSvcRHTrade")
 	public String getRTMSDataSvcRHTrade(@RequestParam Map<String, String> paramMap) {
 		return new RestApiHelper()
+				.SetDomain(apiDomain)
 				.SetBaseUrl(apiBaseUrl + rhTradeUrl)
 				.SetServiceKey(serviceKey)
 				.ParameterMap2Url(paramMap)
@@ -92,7 +97,25 @@ public class SpringBoot2RestController {
 	@RequestMapping("/api/getRTMSDataSvcSHTrade")
 	public String getRTMSDataSvcSHTrade(@RequestParam Map<String, String> paramMap) {
 		return new RestApiHelper()
+				.SetDomain(apiDomain)
 				.SetBaseUrl(apiBaseUrl + shTradeUrl)
+				.SetServiceKey(serviceKey)
+				.ParameterMap2Url(paramMap)
+				.GenerateApiFullUrl()
+				.getInputStream();
+		
+	}
+	
+	/**
+	 * 오피스텔 실거래내역 API
+	 * @param paramMap
+	 * @return
+	 */
+	@RequestMapping("/api/getRTMSDataSvcOffiTrade")
+	public String getRTMSDataSvcOffiTrade(@RequestParam Map<String, String> paramMap) {
+		return new RestApiHelper()
+				.SetDomain(offiDomain)
+				.SetBaseUrl(apiBaseUrl + offiTradeUrl)
 				.SetServiceKey(serviceKey)
 				.ParameterMap2Url(paramMap)
 				.GenerateApiFullUrl()
