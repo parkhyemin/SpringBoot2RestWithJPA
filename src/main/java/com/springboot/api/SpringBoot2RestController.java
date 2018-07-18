@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
 
 @CrossOrigin("*")
 @RestController
-public class SpringBoot2RestServiceApplication {
+public class SpringBoot2RestController {
 
-	static final Logger logger = LoggerFactory.getLogger(SpringBoot2RestServiceApplication.class);
+	static final Logger logger = LoggerFactory.getLogger(SpringBoot2RestController.class);
 	
 	private String serviceKey = "AI9qcEoaK35mGSnhjGyfzEBVkfoS14LZFAn7BgBQbI5FwHzxJe1%2BNwPz0GcB%2F0JsMXpFLic28nDyRorftIW8yg%3D%3D";
 	
